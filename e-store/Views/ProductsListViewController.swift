@@ -7,20 +7,7 @@
 
 import UIKit
 
-class ProductsListViewController: UIViewController {
-    
-    lazy var collectionView: UICollectionView = {
-        let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-//        layout.sectionInset = UIEdgeInsets(top: 20, left: 10, bottom: 10, right: 10)
-//        layout.itemSize = CGSize(width: 60, height: 60)
-        layout.scrollDirection = .horizontal
-        
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = .red
-        collectionView.dataSource = self
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
-        return collectionView
-    }()
+class ProductsListViewController: UICollectionViewController {
     
     private var products = [FeedProduct]()
     
@@ -29,39 +16,76 @@ class ProductsListViewController: UIViewController {
         self.products = products
     }
     
+    init() {
+        super.init(collectionViewLayout: UICollectionViewFlowLayout())
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.view.backgroundColor = .systemBackground
         self.navigationItem.title = "E-Store"
         
-        self.view.addSubview(collectionView)
-        
+        collectionView.register(ProductsListCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+       
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         
-        NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            collectionView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 12),
-            collectionView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -12)
+        NSLayoutConstraint.activate( [
+            collectionView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
+            collectionView.leftAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leftAnchor, constant: 12),
+            collectionView.rightAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.rightAnchor, constant: -12)
         ])
     }
-}
-
-extension ProductsListViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         products.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = dequeueCell(in: collectionView, at: indexPath)
-        cell.backgroundColor = .white
+        cell.setupCell(product: products[indexPath.item])
         return cell
     }
     
-    private func dequeueCell(in collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
+    private func dequeueCell(in collectionView: UICollectionView, at indexPath: IndexPath) -> ProductsListCollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? ProductsListCollectionViewCell else {
+            return ProductsListCollectionViewCell()
+        }
         return cell
     }
 }
 
+extension ProductsListViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        var columns: CGFloat
+        
+        let orientation = UIApplication.shared.connectedScenes.flatMap{ ($0 as? UIWindowScene)?.windows ?? [] }.first?.windowScene?.interfaceOrientation
+        
+        if orientation == .landscapeLeft || orientation == .landscapeRight {
+            columns = 4
+        } else {
+            columns = 2
+        }
+        
+        let spacing: CGFloat = 8
+        let totalHorizontalSpacing = (columns - 1) * spacing
+        
+        let itemWidth = (self.collectionView.bounds.width - totalHorizontalSpacing) / columns
+        let itemSize = CGSize(width: itemWidth, height: itemWidth * 0.8)
+        
+        return itemSize
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        24
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        8
+    }
+}
