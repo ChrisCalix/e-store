@@ -69,6 +69,28 @@ class LoadProductsfromLocalUseTestCase: XCTestCase {
         waitForExpectations(timeout: 0.1)
     }
     
+    func test_load_deliversSuccessWithNoItemsFromFileNameWithEmptyJSONList() {
+        let (sut, reader) = makeSUT()
+        let readerError = LocalFeedLoader.Error.invalidData
+        
+        let exp = expectation(description: "wait for load completion")
+        
+        sut.load { result in
+            switch result {
+            case let .success(receivedData):
+                XCTAssertTrue(receivedData.isEmpty)
+            default:
+                XCTFail("Error in completion method")
+            }
+            exp.fulfill()
+        }
+    
+        let emptyJSON = Data("[]".utf8)
+        reader.complete(data: emptyJSON)
+        
+        waitForExpectations(timeout: 0.1)
+    }
+    
     //MARK: Helpers
 
     func makeSUT(fileName: String = "Offers.json", file: StaticString = #filePath, line: UInt = #line) -> (sut: LocalFeedLoader, reader: FileReaderSpy){

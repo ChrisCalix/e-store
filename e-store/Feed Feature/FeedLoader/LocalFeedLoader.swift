@@ -33,5 +33,4 @@ class LocalFeedLoader: FeedLoader {
         }
     }
     
-    
 }

@@ -7,6 +7,12 @@
 
 import Foundation
 
-struct FeedProduct: Decodable{
+struct FeedProduct: Decodable {
     
+    let id: Int
+    let url: String
+    let name: String
+    let description: String
+    let terms: String
+    let current_value: String
 }
