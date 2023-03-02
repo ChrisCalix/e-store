@@ -11,16 +11,14 @@ import XCTest
 class LoadProductsfromLocalUseTestCase: XCTestCase {
     
     func test_init_doesNotDataFromLocalJson() {
-        let reader = FileReaderSpy()
-        let _ = LocalFeedLoader(fileName: "Offers.json", reader: reader)
+        let (_, reader) = makeSUT()
         
         XCTAssertTrue(reader.requestedFiles.isEmpty)
     }
     
     func test_load_twiceRequestDataFromFileTwice() {
         let fileName = "Offers.json"
-        let reader = FileReaderSpy()
-        let sut = LocalFeedLoader(fileName: fileName, reader: reader)
+        let (sut, reader) = makeSUT(fileName: fileName)
         
         sut.load { _ in }
         sut.load { _ in }
@@ -29,8 +27,7 @@ class LoadProductsfromLocalUseTestCase: XCTestCase {
     }
     
     func test_load_DoesNotFoundFileNameError() {
-        let reader = FileReaderSpy()
-        let sut = LocalFeedLoader(fileName: "Offers.json", reader: reader)
+        let (sut, reader) = makeSUT()
         let readerError = LocalFeedLoader.Error.notFound
         
         let exp = expectation(description: "wait for load completion")
@@ -49,26 +46,34 @@ class LoadProductsfromLocalUseTestCase: XCTestCase {
         
         waitForExpectations(timeout: 0.1)
     }
-}
+    
+    //MARK: Helpers
 
-//MARK: Helpers
+    func makeSUT(fileName: String = "Offers.json", file: StaticString = #filePath, line: UInt = #line) -> (sut: LocalFeedLoader, reader: FileReaderSpy){
+        let reader = FileReaderSpy()
+        let sut = LocalFeedLoader(fileName: fileName, reader: reader)
+        return (sut, reader)
+    }
 
-class FileReaderSpy: FileReader {
-    private var messages = [(fileName: String, completion: (FileReader.Result) -> Void)]()
-    
-    var requestedFiles : [String] {
-        return messages.map { $0.fileName }
-    }
-    
-    func get(from fileName: String, completion: @escaping (Result<Data, Error>) -> Void) {
-        messages.append((fileName, completion))
-    }
-    
-    func complete(with error: Error, at index: Int = 0, file: StaticString = #filePath, line: UInt = #line) {
-        guard messages.indices.contains(index) else {
-           return XCTFail("Can't complete request naver made")
+    class FileReaderSpy: FileReader {
+        private var messages = [(fileName: String, completion: (FileReader.Result) -> Void)]()
+        
+        var requestedFiles : [String] {
+            return messages.map { $0.fileName }
         }
+        
+        func get(from fileName: String, completion: @escaping (Result<Data, Error>) -> Void) {
+            messages.append((fileName, completion))
+        }
+        
+        func complete(with error: Error, at index: Int = 0, file: StaticString = #filePath, line: UInt = #line) {
+            guard messages.indices.contains(index) else {
+               return XCTFail("Can't complete request naver made")
+            }
 
-        messages[index].completion(.failure(error))
+            messages[index].completion(.failure(error))
+        }
     }
 }
+
+
