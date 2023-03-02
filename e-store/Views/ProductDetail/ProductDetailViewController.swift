@@ -63,7 +63,18 @@ class ProductDetailViewController: UIViewController {
         return iv
     }()
     
+    private let favoriteBarbutton: UIButton = {
+        let btn = UIButton(type: .custom)
+        btn.setImage(UIImage(systemName: "heart"), for: .normal)
+        btn.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+        btn.tintColor = .red
+        return btn
+    }()
     
+    @objc func makeFavorite() {
+        self.product?.isFavoritte.toggle()
+        self.favoriteBarbutton.setImage(UIImage(systemName: (product?.isFavoritte ?? false) ? "heart.fill" : "heart"), for: .normal)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -102,6 +113,8 @@ class ProductDetailViewController: UIViewController {
     private func initializeBarItems() {
         
         self.navigationItem.title = "Detail's Product"
+        favoriteBarbutton.addTarget(self, action: #selector(makeFavorite), for: .touchUpInside)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: favoriteBarbutton)
     }
     
     public func setupVC(_ product: ProductModel) {

@@ -27,7 +27,7 @@ class ProductsListCollectionViewCell: UICollectionViewCell {
     private let image: UIImageView = {
        let iv = UIImageView()
         iv.translatesAutoresizingMaskIntoConstraints = false
-        iv.contentMode = .scaleAspectFill
+        iv.contentMode = .scaleAspectFit
         iv.layer.cornerRadius = 12
         return iv
     }()
