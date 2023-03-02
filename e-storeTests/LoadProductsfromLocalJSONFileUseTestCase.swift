@@ -22,6 +22,11 @@ class LoadProductsfromLocalJSONFileUseTestCase: XCTestCase {
         expect(sut, toCompleteWith: .failure(.invalidData))
     }
     
+    func test_load_deliversSuccessWithNoItemsFromFileNameWithEmptyJSONList() {
+        let (sut, _) = makeSUT(fileName: "EmptyProducts")
+
+        expect(sut, toCompleteWith: .success([]))
+    }
     
     //MARK: Helpers
     
