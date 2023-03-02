@@ -7,15 +7,21 @@
 
 import Foundation
 
-class ProductListViewModel {
-    let fileName = "Offers"
-    var products : Observable<[ProductModel]> = Observable([])
+protocol ProductListViewModelExpected {
+    func getOffersProduct()
+    func getProduct(at indexPath: IndexPath ) -> ProductModel?
+    func getNumberOfProducts() -> Int?
+}
+
+struct ProductListViewModel : ProductListViewModelExpected {
+    private let fileName = "Offers"
+    private var products : Observable<[ProductModel]> = Observable([])
     
     func getOffersProduct() {
         let reader = JSONFileReader()
         let localFeedLoader = LocalFeedLoader(fileName: fileName, reader: reader)
-        localFeedLoader.load { [weak self] result in
-            guard let self else { return }
+        localFeedLoader.load { result in
+//            guard let self else { return }
             switch result {
             case let .success(receivedProducts):
                 self.products.value = receivedProducts
@@ -31,5 +37,9 @@ class ProductListViewModel {
                 return nil
         }
         return products.value?[indexPath.item]
+    }
+    
+    func getNumberOfProducts() -> Int? {
+        products.value?.count
     }
 }

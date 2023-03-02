@@ -24,9 +24,12 @@ class ProductsListViewControllerUseTestCase: XCTestCase {
                                 terms: "Rebate valid on Scotch-Brite® Scrub Dots Non-Scratch Scrub Sponges for any variety, 2 ct. pack or larger.",
                                 currentValue: "$0.75 Cash Back")
         
-        XCTAssertEqual(makeSUT().collectionView.numberOfItems(inSection: 0), 0)
-        XCTAssertEqual(makeSUT(products: [item]).collectionView.numberOfItems(inSection: 0), 1)
-        XCTAssertEqual(makeSUT(products: [item, item]).collectionView.numberOfItems(inSection: 0), 2)
+        let model = ProductModel(id: item.id, url: item.url, name: item.name, description: item.description, terms: item.terms, current_value: item.current_value)
+        
+        let sut = makeSUT()
+        XCTAssertEqual(sut.collectionView.numberOfItems(inSection: 0), 0)
+        XCTAssertEqual(makeSUT(products: [model]).collectionView.numberOfItems(inSection: 0), 1)
+        XCTAssertEqual(makeSUT(products: [model, model]).collectionView.numberOfItems(inSection: 0), 2)
     }
     
     func test_viewDidLoad_renderViewWithCollectionViewItemDetail() {
@@ -37,8 +40,9 @@ class ProductsListViewControllerUseTestCase: XCTestCase {
                                 description: "Any variety - 2 ct. pack or larger",
                                 terms: "Rebate valid on Scotch-Brite® Scrub Dots Non-Scratch Scrub Sponges for any variety, 2 ct. pack or larger.",
                                 currentValue: "$0.75 Cash Back")
+        let model = ProductModel(id: item.id, url: item.url, name: item.name, description: item.description, terms: item.terms, current_value: item.current_value)
         
-        let sut = makeSUT(products: [item])
+        let sut = makeSUT(products: [model])
         guard let cell = sut.collectionView.dataSource?.collectionView(sut.collectionView, cellForItemAt: IndexPath(item: 0, section: 0)) as? ProductsListCollectionViewCell else {
             XCTFail("Item not found")
             return
@@ -50,8 +54,8 @@ class ProductsListViewControllerUseTestCase: XCTestCase {
     
     //MARK: Helpers
     
-    func makeSUT(products: [FeedProduct] = []) -> ProductsListViewController {
-        let viewModel = ProductListViewModel()
+    func makeSUT(products: [ProductModel] = []) -> ProductsListViewController {
+        let viewModel = ViewModelSpy(products: products)
         let sut = ProductsListViewController(viewModel: viewModel)
         sut.loadViewIfNeeded()
         return sut
@@ -68,4 +72,28 @@ class ProductsListViewControllerUseTestCase: XCTestCase {
         return item
     }
     
+    struct ViewModelSpy: ProductListViewModelExpected {
+        private var products : Observable<[ProductModel]> = Observable([])
+        private var productsSpy : [ProductModel]
+        
+        func getOffersProduct() {
+            products.value = productsSpy
+        }
+        
+        func getProduct(at indexPath: IndexPath) -> e_store.ProductModel? {
+            if ((products.value?.indices.contains(indexPath.item)) == nil) {
+                    return nil
+            }
+            return products.value?[indexPath.item]
+        }
+        
+        func getNumberOfProducts() -> Int? {
+            products.value?.count
+        }
+        
+        init(products: [ProductModel]) {
+            self.productsSpy = products
+        }
+        
+    }
 }

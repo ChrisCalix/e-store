@@ -9,9 +9,9 @@ import UIKit
 
 class ProductsListViewController: UICollectionViewController {
     
-    private var viewModel: ProductListViewModel?
+    private var viewModel: ProductListViewModelExpected?
     
-    convenience init(viewModel: ProductListViewModel) {
+    convenience init(viewModel: ProductListViewModelExpected) {
         self.init()
         self.viewModel = viewModel
     }
@@ -35,7 +35,7 @@ class ProductsListViewController: UICollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel?.products.value?.count ?? 0
+        viewModel?.getNumberOfProducts() ?? 0
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
