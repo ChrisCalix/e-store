@@ -47,6 +47,28 @@ class LoadProductsfromLocalUseTestCase: XCTestCase {
         waitForExpectations(timeout: 0.1)
     }
     
+    func test_load_DeliversInvalidDataFromFileNameWithInvalidJSON() {
+        let (sut, reader) = makeSUT()
+        let readerError = LocalFeedLoader.Error.invalidData
+        
+        let exp = expectation(description: "wait for load completion")
+        
+        sut.load { result in
+            switch result {
+            case let .failure(receivedError as LocalFeedLoader.Error):
+                XCTAssertEqual(receivedError, readerError)
+            default:
+                XCTFail("Error in completion method")
+            }
+            exp.fulfill()
+        }
+    
+        let invalidJSON = Data("invalid JSON".utf8)
+        reader.complete(data: invalidJSON)
+        
+        waitForExpectations(timeout: 0.1)
+    }
+    
     //MARK: Helpers
 
     func makeSUT(fileName: String = "Offers.json", file: StaticString = #filePath, line: UInt = #line) -> (sut: LocalFeedLoader, reader: FileReaderSpy){
@@ -73,6 +95,14 @@ class LoadProductsfromLocalUseTestCase: XCTestCase {
 
             messages[index].completion(.failure(error))
         }
+        
+        func complete(data: Data, at index: Int = 0, file: StaticString = #filePath, line: UInt = #line) {
+              guard messages.indices.contains(index) else {
+                  return XCTFail("Can't complete request naver made")
+              }
+              
+              messages[index].completion(.success(data))
+          }
     }
 }
 

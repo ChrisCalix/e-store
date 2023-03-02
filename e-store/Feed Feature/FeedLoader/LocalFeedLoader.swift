@@ -27,9 +27,11 @@ class LocalFeedLoader: FeedLoader {
             switch result {
             case let .failure(error):
                 completion(.failure(error))
-            default:
-                break
+            case let .success(data):
+                completion(FeedMapper.validateAndMap(data))
             }
         }
     }
+    
+    
 }

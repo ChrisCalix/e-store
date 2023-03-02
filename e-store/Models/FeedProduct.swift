@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct FeedProduct {
+struct FeedProduct: Decodable{
     
 }
