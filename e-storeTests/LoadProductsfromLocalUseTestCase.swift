@@ -16,6 +16,16 @@ class LoadProductsfromLocalUseTestCase: XCTestCase {
         
         XCTAssertTrue(reader.requestedFiles.isEmpty)
     }
+    
+    func test_load_onceRequestDataFromFile() {
+        let fileName = "Offers.json"
+        let reader = FileReaderSpy()
+        let sut = LocalFeedLoader(fileName: fileName, reader: reader)
+        
+        sut.load { _ in }
+        
+        XCTAssertEqual(reader.requestedFiles, [fileName])
+    }
 }
 
 //MARK: Helpers
@@ -28,6 +38,6 @@ class FileReaderSpy: FileReader {
     }
     
     func get(from fileName: String, completion: @escaping (Result<Data, Error>) -> Void) {
-        
+        messages.append((fileName, completion))
     }
 }

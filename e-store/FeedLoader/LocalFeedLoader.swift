@@ -18,6 +18,8 @@ class LocalFeedLoader: FeedLoader {
     }
     
     func load(completion: @escaping (FeedResult) -> Void) {
-
+        reader.get(from: fileName) { result in
+            
+        }
     }
 }
