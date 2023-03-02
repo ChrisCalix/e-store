@@ -67,36 +67,59 @@ class ProductDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.title = "Detail's Product"
-        self.view.backgroundColor = .systemBackground
+        self.setupViews()
+    }
+    
+    private func setupViews() {
         
+        initializeBarItems()
+        
+        self.view.backgroundColor = .systemBackground
         self.view.addSubview(stackView)
         
-        stackView.addArrangedSubview(nameLabel)
-        stackView.addArrangedSubview(imageView)
-        stackView.addArrangedSubview(currentValueLabel)
-        stackView.addArrangedSubview(descriptionLabel)
-        stackView.addArrangedSubview(termsLabel)
-       
+        loadStackView(views: [nameLabel,
+                              imageView,
+                              currentValueLabel,
+                              descriptionLabel,
+                              termsLabel])
         
-        nameLabel.text = product?.name.uppercased()
-        descriptionLabel.text = product?.description.uppercased()
-        currentValueLabel.text = product?.current_value.uppercased()
-        termsLabel.text = product?.terms.uppercased()
+        NSLayoutConstraint.activate( setContriantsForStaclView() )
         
-        NSLayoutConstraint.activate( [
-            stackView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            stackView.leftAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leftAnchor, constant: 20),
-            stackView.rightAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.rightAnchor, constant: -20)
-           
-        ])
+        guard let product else { return }
+        self.fillValuesFromProduct(product: product)
+    }
+    
+    private func fillValuesFromProduct(product: ProductModel) {
+        nameLabel.text = product.name.uppercased()
+        descriptionLabel.text = product.description.uppercased()
+        currentValueLabel.text = product.current_value.uppercased()
+        termsLabel.text = product.terms.uppercased()
         
-        guard let url = URL(string: product?.url ?? "") else { return }
+        guard let url = URL(string: product.url) else { return }
         imageDataTask = imageView.loadFrom(url)
     }
     
+    private func initializeBarItems() {
+        
+        self.navigationItem.title = "Detail's Product"
+    }
+    
     public func setupVC(_ product: ProductModel) {
+        
         self.product = product
-
+    }
+    
+    private func setContriantsForStaclView() -> [NSLayoutConstraint] {
+        return [
+            stackView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            stackView.leftAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leftAnchor, constant: 20),
+            stackView.rightAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.rightAnchor, constant: -20)
+        ]
+    }
+    
+    private func loadStackView(views: [UIView]) {
+        for view in views {
+            stackView.addArrangedSubview(view)
+        }
     }
 }
