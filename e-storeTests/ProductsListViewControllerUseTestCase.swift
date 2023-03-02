@@ -29,6 +29,25 @@ class ProductsListViewControllerUseTestCase: XCTestCase {
         XCTAssertEqual(makeSUT(products: [item, item]).collectionView.numberOfItems(inSection: 0), 2)
     }
     
+    func test_viewDidLoad_renderViewWithCollectionViewItemDetail() {
+        
+        let item = makeProduct(id: "110579",
+                                url: "https://product-images.ibotta.com/offer/dUxYcQPeq391-DiywFZF8g-normal.png",
+                                name: "Scotch-Brite® Scrub Dots Non-Scratch Scrub Sponges",
+                                description: "Any variety - 2 ct. pack or larger",
+                                terms: "Rebate valid on Scotch-Brite® Scrub Dots Non-Scratch Scrub Sponges for any variety, 2 ct. pack or larger.",
+                                currentValue: "$0.75 Cash Back")
+        
+        let sut = makeSUT(products: [item])
+        guard let cell = sut.collectionView.dataSource?.collectionView(sut.collectionView, cellForItemAt: IndexPath(item: 0, section: 0)) as? ProductsListCollectionViewCell else {
+            XCTFail("Item not found")
+            return
+        }
+        
+        XCTAssertEqual(cell.nameLabel.text, item.name)
+        XCTAssertEqual(cell.ammountLabel.text, item.current_value)
+    }
+    
     //MARK: Helpers
     
     func makeSUT(products: [FeedProduct] = []) -> ProductsListViewController {
