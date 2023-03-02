@@ -11,15 +11,12 @@ import XCTest
 class ProductsListViewControllerUseTestCase: XCTestCase {
     
     func test_viewDidLoad_renderViewWithNavigationBarTitle() {
-        let sut = ProductsListViewController()
-        
-        sut.loadViewIfNeeded()
+        let sut = makeSUT()
         
         XCTAssertEqual(sut.navigationItem.title, "E-Store")
     }
     
     func test_viewDidLoad_renderViewwithCollectionViewItems() {
-        
         let item = makeProduct(id: "110579",
                                 url: "https://product-images.ibotta.com/offer/dUxYcQPeq391-DiywFZF8g-normal.png",
                                 name: "Scotch-Brite® Scrub Dots Non-Scratch Scrub Sponges",
@@ -27,15 +24,18 @@ class ProductsListViewControllerUseTestCase: XCTestCase {
                                 terms: "Rebate valid on Scotch-Brite® Scrub Dots Non-Scratch Scrub Sponges for any variety, 2 ct. pack or larger.",
                                 currentValue: "$0.75 Cash Back")
         
-        let sut = ProductsListViewController(products: [item, item])
-        
-        sut.loadViewIfNeeded()
-        
-        sut.collectionView.numberOfItems(inSection: 0)
-        XCTAssertEqual(sut.collectionView.numberOfItems(inSection: 0), 2)
+        XCTAssertEqual(makeSUT().collectionView.numberOfItems(inSection: 0), 0)
+        XCTAssertEqual(makeSUT(products: [item]).collectionView.numberOfItems(inSection: 0), 1)
+        XCTAssertEqual(makeSUT(products: [item, item]).collectionView.numberOfItems(inSection: 0), 2)
     }
     
     //MARK: Helpers
+    
+    func makeSUT(products: [FeedProduct] = []) -> ProductsListViewController {
+        let sut = ProductsListViewController(products: products)
+        sut.loadViewIfNeeded()
+        return sut
+    }
     
     func makeProduct(id: String, url: String, name: String, description: String, terms: String, currentValue: String) -> FeedProduct {
         let item = FeedProduct(id: id,
