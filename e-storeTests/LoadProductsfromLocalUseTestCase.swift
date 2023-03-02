@@ -28,64 +28,29 @@ class LoadProductsfromLocalUseTestCase: XCTestCase {
     
     func test_load_DoesNotFoundFileNameError() {
         let (sut, reader) = makeSUT()
-        let readerError = LocalFeedLoader.Error.notFound
         
-        let exp = expectation(description: "wait for load completion")
-        
-        sut.load { result in
-            switch result {
-            case let .failure(receivedError as LocalFeedLoader.Error):
-                XCTAssertEqual(receivedError, readerError)
-            default:
-                XCTFail("Error in completion method")
-            }
-            exp.fulfill()
+        expect(sut, toCompleteWith: .failure(.notFound)) {
+            let readerError = LocalFeedLoader.Error.notFound
+            reader.complete(with: readerError)
         }
-    
-        reader.complete(with: readerError)
-        
-        waitForExpectations(timeout: 0.1)
     }
     
     func test_load_DeliversInvalidDataFromFileNameWithInvalidJSON() {
         let (sut, reader) = makeSUT()
-        let readerError = LocalFeedLoader.Error.invalidData
         
-        let exp = expectation(description: "wait for load completion")
-        
-        sut.load { result in
-            switch result {
-            case let .failure(receivedError as LocalFeedLoader.Error):
-                XCTAssertEqual(receivedError, readerError)
-            default:
-                XCTFail("Error in completion method")
-            }
-            exp.fulfill()
+        expect(sut, toCompleteWith: .failure(.invalidData)) {
+            let invalidJSON = Data("invalid JSON".utf8)
+            reader.complete(data: invalidJSON)
         }
-    
-        let invalidJSON = Data("invalid JSON".utf8)
-        reader.complete(data: invalidJSON)
-        
-        waitForExpectations(timeout: 0.1)
     }
     
     func test_load_deliversSuccessWithNoItemsFromFileNameWithEmptyJSONList() {
         let (sut, reader) = makeSUT()
         
-        let exp = expectation(description: "wait for load completion")
-        
-        sut.load { result in
-            switch result {
-            case let .success(receivedData):
-                XCTAssertTrue(receivedData.isEmpty)
-            default:
-                XCTFail("Error in completion method")
-            }
-            exp.fulfill()
+        expect(sut, toCompleteWith: .success([])) {
+            let json = makeProductsJSON([])
+            reader.complete(data: json)
         }
-        reader.complete(data: makeProductsJSON([]))
-        
-        waitForExpectations(timeout: 0.1)
     }
     
     func test_load_deliversSuccessWithItemsFromFileNameWithEmptyJSONItems() {
@@ -94,22 +59,11 @@ class LoadProductsfromLocalUseTestCase: XCTestCase {
         let item1 = makeProduct()
         let item2 = makeProduct()
         let item3 = makeProduct()
-
-        let exp = expectation(description: "wait for load completion")
-
-        sut.load { result in
-            switch result {
-            case let .success(receivedData):
-                XCTAssertEqual(receivedData, [item1.model, item2.model, item3.model])
-            default:
-                XCTFail("Error in completion method")
-            }
-            exp.fulfill()
+        
+        expect(sut, toCompleteWith: .success([item1.model, item2.model, item3.model])) {
+            let json = makeProductsJSON([item1.json, item2.json, item3.json])
+            reader.complete(data: json)
         }
-
-        reader.complete(data: makeProductsJSON([item1.json, item2.json, item3.json]))
-
-        waitForExpectations(timeout: 0.1)
     }
     
     //MARK: Helpers
@@ -125,19 +79,42 @@ class LoadProductsfromLocalUseTestCase: XCTestCase {
     }
     
     private func makeProduct() -> (model: FeedProduct, json: [String: Any]) {
-            let item = FeedProduct(id: 1, url: "", name: "", description: "", terms: "", current_value: "")
-            
-            let json = [
-                "id": item.id,
-                "url": item.url,
-                "name": item.name,
-                "description": item.description,
-                "terms": item.terms,
-                "current_value": item.current_value
-            ].compactMapValues { $0 }
-            
-            return (item, json)
+        let item = FeedProduct(id: 1, url: "", name: "", description: "", terms: "", current_value: "")
+        
+        let json = [
+            "id": item.id,
+            "url": item.url,
+            "name": item.name,
+            "description": item.description,
+            "terms": item.terms,
+            "current_value": item.current_value
+        ].compactMapValues { $0 }
+        
+        return (item, json)
+    }
+    
+    func expect(_ sut: LocalFeedLoader, toCompleteWith expectedResult: Result<[FeedProduct], LocalFeedLoader.Error>, when action: () -> Void, file: StaticString = #filePath, line: UInt = #line) {
+        let exp = expectation(description: "Wait for load completion")
+
+        sut.load { receivedResult in
+            switch (receivedResult, expectedResult) {
+            case let (.success(receivedItems), .success(expectedItems)):
+                XCTAssertEqual(receivedItems, expectedItems, file: file, line: line)
+
+            case let (.failure(receivedError as LocalFeedLoader.Error), .failure(expectedError)):
+                XCTAssertEqual(receivedError, expectedError, file: file, line: line)
+
+            default:
+                XCTFail("Expected result \(expectedResult) got \(receivedResult) instead", file: file, line: line)
+            }
+
+            exp.fulfill()
         }
+
+        action()
+
+        waitForExpectations(timeout: 0.1)
+    }
 
     class FileReaderSpy: FileReader {
         private var messages = [(fileName: String, completion: (FileReader.Result) -> Void)]()
