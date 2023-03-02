@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct FeedProduct: Decodable {
+struct FeedProduct: Decodable, Equatable {
     
     let id: Int
     let url: String

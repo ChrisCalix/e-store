@@ -71,7 +71,6 @@ class LoadProductsfromLocalUseTestCase: XCTestCase {
     
     func test_load_deliversSuccessWithNoItemsFromFileNameWithEmptyJSONList() {
         let (sut, reader) = makeSUT()
-        let readerError = LocalFeedLoader.Error.invalidData
         
         let exp = expectation(description: "wait for load completion")
         
@@ -84,10 +83,30 @@ class LoadProductsfromLocalUseTestCase: XCTestCase {
             }
             exp.fulfill()
         }
-    
-        let emptyJSON = Data("[]".utf8)
-        reader.complete(data: emptyJSON)
+        reader.complete(data: makeProductsJSON([]))
         
+        waitForExpectations(timeout: 0.1)
+    }
+    
+    func test_load_deliversSuccessWithItemsFromFileNameWithEmptyJSONItems() {
+        let (sut, reader) = makeSUT()
+
+        let item = makeProduct()
+
+        let exp = expectation(description: "wait for load completion")
+
+        sut.load { result in
+            switch result {
+            case let .success(receivedData):
+                XCTAssertEqual(receivedData, [item.model])
+            default:
+                XCTFail("Error in completion method")
+            }
+            exp.fulfill()
+        }
+
+        reader.complete(data: makeProductsJSON([item.json]))
+
         waitForExpectations(timeout: 0.1)
     }
     
@@ -98,6 +117,25 @@ class LoadProductsfromLocalUseTestCase: XCTestCase {
         let sut = LocalFeedLoader(fileName: fileName, reader: reader)
         return (sut, reader)
     }
+    
+    private func makeProductsJSON(_ items: [[String: Any]]) -> Data {
+        return try! JSONSerialization.data(withJSONObject: items)
+    }
+    
+    private func makeProduct() -> (model: FeedProduct, json: [String: Any]) {
+            let item = FeedProduct(id: 1, url: "", name: "", description: "", terms: "", current_value: "")
+            
+            let json = [
+                "id": item.id,
+                "url": item.url,
+                "name": item.name,
+                "description": item.description,
+                "terms": item.terms,
+                "current_value": item.current_value
+            ].compactMapValues { $0 }
+            
+            return (item, json)
+        }
 
     class FileReaderSpy: FileReader {
         private var messages = [(fileName: String, completion: (FileReader.Result) -> Void)]()

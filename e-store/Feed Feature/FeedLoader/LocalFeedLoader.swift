@@ -7,7 +7,7 @@
 
 import Foundation
 
-class LocalFeedLoader: FeedLoader {
+public class LocalFeedLoader: FeedLoader {
     
     private let fileName: String
     private let reader: FileReader
