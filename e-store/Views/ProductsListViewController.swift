@@ -28,18 +28,8 @@ class ProductsListViewController: UICollectionViewController {
         super.viewDidLoad()
         
         self.view.backgroundColor = .systemBackground
-        self.navigationItem.title = "E-Store"
-        
-        collectionView.register(ProductsListCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
-       
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate( [
-            collectionView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
-            collectionView.leftAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leftAnchor, constant: 12),
-            collectionView.rightAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.rightAnchor, constant: -12)
-        ])
+        self.initializeNavigationbarItems()
+        self.initializeCollectionView()
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -66,7 +56,25 @@ class ProductsListViewController: UICollectionViewController {
        
     }
     
+    private func initializeNavigationbarItems() {
+        self.navigationItem.title = "E-Store"
+    }
     
+    private func initializeCollectionView() {
+        
+        collectionView.register(ProductsListCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate(setContriantsForCollectionView())
+    }
+    
+    private func setContriantsForCollectionView() -> [NSLayoutConstraint] {
+        return  [
+            collectionView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
+            collectionView.leftAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leftAnchor, constant: 12),
+            collectionView.rightAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.rightAnchor, constant: -12)
+        ]
+    }
 }
 
 extension ProductsListViewController: UICollectionViewDelegateFlowLayout {
