@@ -20,8 +20,8 @@ extension LoadProductsfromLocalUseTestCase {
         return try! JSONSerialization.data(withJSONObject: items)
     }
     
-    func makeProduct() -> (model: FeedProduct, json: [String: Any]) {
-        let item = FeedProduct(id: "1", url: "", name: "", description: "", terms: "", current_value: "")
+    func makeProduct() -> (model: ProductModel, json: [String: Any]) {
+        let item = ProductModel(id: "1", url: "", name: "", description: "", terms: "", current_value: "")
         
         let json = [
             "id": item.id,
@@ -35,7 +35,7 @@ extension LoadProductsfromLocalUseTestCase {
         return (item, json)
     }
     
-    func expect(_ sut: LocalFeedLoader, toCompleteWith expectedResult: Result<[FeedProduct], LocalFeedLoader.Error>, when action: () -> Void, file: StaticString = #filePath, line: UInt = #line) {
+    func expect(_ sut: LocalFeedLoader, toCompleteWith expectedResult: Result<[ProductModel], LocalFeedLoader.Error>, when action: () -> Void, file: StaticString = #filePath, line: UInt = #line) {
         let exp = expectation(description: "Wait for load completion")
 
         sut.load { receivedResult in

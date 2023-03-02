@@ -10,5 +10,21 @@
             </PersistentString>
          </PersistentStrings>
       </ContextState>
+      <ContextState
+         contextName = "static FeedMapper.validateAndMap(_:):FeedProductMapper.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "try? JSONDecoder().decode([FeedProduct].self, from: data)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ProductsListViewController.collectionView(_:numberOfItemsInSection:):ProductsListViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "viewModel?.products.value?.count ">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
    </ContextStates>
 </VariablesViewState>

@@ -38,14 +38,6 @@
                BlueprintName = "e-storeTests"
                ReferencedContainer = "container:e-store.xcodeproj">
             </BuildableReference>
-            <SkippedTests>
-               <Test
-                  Identifier = "LoadProductsfromLocalJSONFileUseTestCase">
-               </Test>
-               <Test
-                  Identifier = "LoadProductsfromLocalUseTestCase">
-               </Test>
-            </SkippedTests>
          </TestableReference>
       </Testables>
    </TestAction>

@@ -1,13 +1,13 @@
 //
-//  FeedProduct.swift
+//  ProductModel.swift
 //  e-store
 //
-//  Created by Sonic on 1/3/23.
+//  Created by Sonic on 2/3/23.
 //
 
 import Foundation
 
-struct FeedProduct: Decodable, Equatable {
+struct ProductModel: Equatable {
     
     let id: String
     let url: String
@@ -15,4 +15,6 @@ struct FeedProduct: Decodable, Equatable {
     let description: String
     let terms: String
     let current_value: String
+    
+    var isFavoritte: Bool = false
 }

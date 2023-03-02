@@ -56,8 +56,8 @@ class LoadProductsfromLocalJSONFileUseTestCase: XCTestCase {
         return (sut, reader)
     }
     
-    func makeProduct(id: String, url: String, name: String, description: String, terms: String, currentValue: String) -> (model: FeedProduct, json: [String: Any]) {
-        let item = FeedProduct(id: id,
+    func makeProduct(id: String, url: String, name: String, description: String, terms: String, currentValue: String) -> (model: ProductModel, json: [String: Any]) {
+        let item = ProductModel(id: id,
                                url: url,
                                name: name,
                                description: description,
@@ -76,7 +76,7 @@ class LoadProductsfromLocalJSONFileUseTestCase: XCTestCase {
         return (item, json)
     }
     
-    func expect(_ sut: LocalFeedLoader, toCompleteWith expectedResult: Result<[FeedProduct], LocalFeedLoader.Error>, file: StaticString = #filePath, line: UInt = #line) {
+    func expect(_ sut: LocalFeedLoader, toCompleteWith expectedResult: Result<[ProductModel], LocalFeedLoader.Error>, file: StaticString = #filePath, line: UInt = #line) {
           let exp = expectation(description: "Wait for load completion")
 
           sut.load { receivedResult in
