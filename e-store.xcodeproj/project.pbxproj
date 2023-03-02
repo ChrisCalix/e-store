@@ -31,6 +31,9 @@
 		C3B801A829B12A06008A066A /* ProductModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3B801A729B12A06008A066A /* ProductModel.swift */; };
 		C3B801AA29B13715008A066A /* ProductDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3B801A929B13715008A066A /* ProductDetailViewController.swift */; };
 		C3B801AC29B13C57008A066A /* UIImageView+LoadFromURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3B801AB29B13C57008A066A /* UIImageView+LoadFromURL.swift */; };
+		C3B801AE29B141D8008A066A /* ProductListViewController+LayoutFlowDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3B801AD29B141D8008A066A /* ProductListViewController+LayoutFlowDelegate.swift */; };
+		C3B801B329B14242008A066A /* ProductListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3B801B229B14242008A066A /* ProductListViewModel.swift */; };
+		C3B801B629B142CC008A066A /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3B801B529B142CC008A066A /* Observable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +74,9 @@
 		C3B801A729B12A06008A066A /* ProductModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductModel.swift; sourceTree = "<group>"; };
 		C3B801A929B13715008A066A /* ProductDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailViewController.swift; sourceTree = "<group>"; };
 		C3B801AB29B13C57008A066A /* UIImageView+LoadFromURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+LoadFromURL.swift"; sourceTree = "<group>"; };
+		C3B801AD29B141D8008A066A /* ProductListViewController+LayoutFlowDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProductListViewController+LayoutFlowDelegate.swift"; sourceTree = "<group>"; };
+		C3B801B229B14242008A066A /* ProductListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListViewModel.swift; sourceTree = "<group>"; };
+		C3B801B529B142CC008A066A /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +100,7 @@
 		C34061EF29B054D000BB2767 /* JSONFiles */ = {
 			isa = PBXGroup;
 			children = (
+				C34061F029B054F900BB2767 /* Offers.json */,
 			);
 			path = JSONFiles;
 			sourceTree = "<group>";
@@ -129,17 +136,16 @@
 		C39E53BB29B0055C00220433 /* e-store */ = {
 			isa = PBXGroup;
 			children = (
-				C3AE7B7129B0E8EE00308947 /* Views */,
-				C34061F029B054F900BB2767 /* Offers.json */,
-				C34061EF29B054D000BB2767 /* JSONFiles */,
-				C39E53FB29B0395600220433 /* Feed Feature */,
-				C39E53F429B01F4100220433 /* Models */,
 				C39E53BC29B0055C00220433 /* AppDelegate.swift */,
 				C39E53BE29B0055C00220433 /* SceneDelegate.swift */,
 				C39E53C529B0055D00220433 /* Assets.xcassets */,
 				C39E53C729B0055D00220433 /* LaunchScreen.storyboard */,
 				C39E53CA29B0055D00220433 /* Info.plist */,
-				C3B801AB29B13C57008A066A /* UIImageView+LoadFromURL.swift */,
+				C3B801B429B142A1008A066A /* Utils */,
+				C3B801B129B14235008A066A /* ViewModel */,
+				C3AE7B7129B0E8EE00308947 /* Views */,
+				C39E53FB29B0395600220433 /* Feed Feature */,
+				C39E53F429B01F4100220433 /* Models */,
 			);
 			path = "e-store";
 			sourceTree = "<group>";
@@ -197,9 +203,8 @@
 		C3AE7B7129B0E8EE00308947 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				C3AE7B7229B0FE1900308947 /* CollectionViewCell */,
-				C39E53C029B0055C00220433 /* ProductsListViewController.swift */,
-				C3B801A929B13715008A066A /* ProductDetailViewController.swift */,
+				C3B801B029B1421C008A066A /* ProductDetail */,
+				C3B801AF29B14216008A066A /* ProductList */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -210,6 +215,42 @@
 				C3AE7B7329B0FE4800308947 /* ProductsListCollectionViewCell.swift */,
 			);
 			path = CollectionViewCell;
+			sourceTree = "<group>";
+		};
+		C3B801AF29B14216008A066A /* ProductList */ = {
+			isa = PBXGroup;
+			children = (
+				C3B801AD29B141D8008A066A /* ProductListViewController+LayoutFlowDelegate.swift */,
+				C39E53C029B0055C00220433 /* ProductsListViewController.swift */,
+				C3AE7B7229B0FE1900308947 /* CollectionViewCell */,
+			);
+			path = ProductList;
+			sourceTree = "<group>";
+		};
+		C3B801B029B1421C008A066A /* ProductDetail */ = {
+			isa = PBXGroup;
+			children = (
+				C3B801A929B13715008A066A /* ProductDetailViewController.swift */,
+			);
+			path = ProductDetail;
+			sourceTree = "<group>";
+		};
+		C3B801B129B14235008A066A /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				C3B801B229B14242008A066A /* ProductListViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		C3B801B429B142A1008A066A /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				C34061EF29B054D000BB2767 /* JSONFiles */,
+				C3B801AB29B13C57008A066A /* UIImageView+LoadFromURL.swift */,
+				C3B801B529B142CC008A066A /* Observable.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -316,7 +357,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C3B801B629B142CC008A066A /* Observable.swift in Sources */,
 				C39E53C129B0055C00220433 /* ProductsListViewController.swift in Sources */,
+				C3B801AE29B141D8008A066A /* ProductListViewController+LayoutFlowDelegate.swift in Sources */,
 				C39E53BD29B0055C00220433 /* AppDelegate.swift in Sources */,
 				C3AE7B7429B0FE4800308947 /* ProductsListCollectionViewCell.swift in Sources */,
 				C39E53F829B01FA800220433 /* FileReader.swift in Sources */,
@@ -326,6 +369,7 @@
 				C34061EE29B052DD00BB2767 /* JSONFileReader.swift in Sources */,
 				C3B801A829B12A06008A066A /* ProductModel.swift in Sources */,
 				C39E53F329B01F3900220433 /* FeedLoader.swift in Sources */,
+				C3B801B329B14242008A066A /* ProductListViewModel.swift in Sources */,
 				C3B801AC29B13C57008A066A /* UIImageView+LoadFromURL.swift in Sources */,
 				C39E53BF29B0055C00220433 /* SceneDelegate.swift in Sources */,
 				C39E53F629B01F5400220433 /* FeedProduct.swift in Sources */,

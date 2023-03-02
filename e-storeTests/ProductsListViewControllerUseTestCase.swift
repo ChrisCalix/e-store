@@ -51,7 +51,8 @@ class ProductsListViewControllerUseTestCase: XCTestCase {
     //MARK: Helpers
     
     func makeSUT(products: [FeedProduct] = []) -> ProductsListViewController {
-        let sut = ProductsListViewController(products: products)
+        let viewModel = ProductListViewModel()
+        let sut = ProductsListViewController(viewModel: viewModel)
         sut.loadViewIfNeeded()
         return sut
     }
