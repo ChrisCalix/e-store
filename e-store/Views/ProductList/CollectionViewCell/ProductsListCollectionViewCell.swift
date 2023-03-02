@@ -114,7 +114,6 @@ class ProductsListCollectionViewCell: UICollectionViewCell {
     }
                                  
     @objc func makeFavorite() {
-        print("join button")
         self.favoriteButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
     }
     
