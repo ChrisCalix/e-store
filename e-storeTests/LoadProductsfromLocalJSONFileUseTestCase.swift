@@ -12,7 +12,7 @@ class LoadProductsfromLocalJSONFileUseTestCase: XCTestCase {
     
     func test_load_DoesNotFoundFileNameError() {
         let (sut, _) = makeSUT(fileName: "DoesNotExistFile")
-        
+
         expect(sut, toCompleteWith: .failure(.notFound))
     }
     
@@ -37,7 +37,7 @@ class LoadProductsfromLocalJSONFileUseTestCase: XCTestCase {
                                 description: "Any variety - 2 ct. pack or larger",
                                 terms: "Rebate valid on Scotch-Brite® Scrub Dots Non-Scratch Scrub Sponges for any variety, 2 ct. pack or larger.",
                                 currentValue: "$0.75 Cash Back")
-        
+
         let item2 = makeProduct(id: "110580",
                                 url: "https://product-images.ibotta.com/offer/OS0MnVcHXe7snozDC7nIiw-normal.png",
                                 name: "Scotch-Brite® Scrub Dots Heavy Duty Scrub Sponges",

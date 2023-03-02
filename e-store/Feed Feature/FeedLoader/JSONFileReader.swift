@@ -17,21 +17,12 @@ class JSONFileReader: FileReader {
     
     func get(from fileName: String, completion: @escaping (Result<Data, Error>) -> Void) {
         
-        do {
-            guard let bundlePath = bundle.path(forResource: fileName, ofType: "json") else {
-                completion(.failure(LocalFeedLoader.Error.notFound))
-                return
-            }
-
-            guard let data = try String(contentsOfFile: bundlePath).data(using: .utf8) else {
-                completion(.failure(LocalFeedLoader.Error.invalidData))
-                return
-            }
-
-            completion(.success(data))
-            
-        } catch {
-            completion(.failure(error))
+        guard let bundlePath = bundle.path(forResource: fileName, ofType: "json"),
+            let data = try? String(contentsOfFile: bundlePath).data(using: .utf8)  else {
+            completion(.failure(LocalFeedLoader.Error.notFound))
+            return
         }
+
+        completion(.success(data))
     }
 }
