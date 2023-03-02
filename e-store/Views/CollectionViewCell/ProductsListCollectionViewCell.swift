@@ -9,13 +9,13 @@ import UIKit
 
 class ProductsListCollectionViewCell: UICollectionViewCell {
     
-    let card: UIView = {
+    private let card: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
-    let imageBG: UIView = {
+    private let imageBG: UIView = {
         let bg = UIView()
         bg.backgroundColor = .systemGray6
         bg.clipsToBounds = true
@@ -24,7 +24,7 @@ class ProductsListCollectionViewCell: UICollectionViewCell {
         return bg
     }()
     
-    let image: UIImageView = {
+    private let image: UIImageView = {
        let iv = UIImageView()
         iv.translatesAutoresizingMaskIntoConstraints = false
         iv.contentMode = .scaleAspectFill
@@ -52,8 +52,8 @@ class ProductsListCollectionViewCell: UICollectionViewCell {
     
     
     
-    var product: FeedProduct?
-    var imageDataTask: URLSessionDataTask?
+    private var product: FeedProduct?
+    private var imageDataTask: URLSessionDataTask?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -98,7 +98,7 @@ class ProductsListCollectionViewCell: UICollectionViewCell {
         super.init(coder: coder)
     }
     
-    func setupCell(product: FeedProduct) {
+    public func setupCell(product: FeedProduct) {
         self.product = product
         guard let url = URL(string: product.url) else { return }
         

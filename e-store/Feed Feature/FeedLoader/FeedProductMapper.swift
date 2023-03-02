@@ -12,6 +12,6 @@ enum FeedMapper {
         guard let root = try? JSONDecoder().decode([FeedProduct].self, from: data) else {
             return .failure(LocalFeedLoader.Error.invalidData)
         }
-        return .success(root)
+        return .success(root.map(\.product))
     }
 }

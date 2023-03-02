@@ -28,6 +28,7 @@
 		C39E540029B0424100220433 /* LoadProductsfromLocalUseTestCase+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C39E53FF29B0424100220433 /* LoadProductsfromLocalUseTestCase+Helpers.swift */; };
 		C3AE7B7029B0E77200308947 /* ProductsListViewControllerUseTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3AE7B6F29B0E77200308947 /* ProductsListViewControllerUseTestCase.swift */; };
 		C3AE7B7429B0FE4800308947 /* ProductsListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3AE7B7329B0FE4800308947 /* ProductsListCollectionViewCell.swift */; };
+		C3B801A829B12A06008A066A /* ProductModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3B801A729B12A06008A066A /* ProductModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,7 @@
 		C39E53FF29B0424100220433 /* LoadProductsfromLocalUseTestCase+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoadProductsfromLocalUseTestCase+Helpers.swift"; sourceTree = "<group>"; };
 		C3AE7B6F29B0E77200308947 /* ProductsListViewControllerUseTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsListViewControllerUseTestCase.swift; sourceTree = "<group>"; };
 		C3AE7B7329B0FE4800308947 /* ProductsListCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsListCollectionViewCell.swift; sourceTree = "<group>"; };
+		C3B801A729B12A06008A066A /* ProductModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -162,7 +164,7 @@
 		C39E53F429B01F4100220433 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				C39E53F529B01F5400220433 /* FeedProduct.swift */,
+				C3B801A729B12A06008A066A /* ProductModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -170,6 +172,7 @@
 		C39E53FB29B0395600220433 /* Feed Feature */ = {
 			isa = PBXGroup;
 			children = (
+				C39E53F529B01F5400220433 /* FeedProduct.swift */,
 				C39E53F229B01F3900220433 /* FeedLoader.swift */,
 				C39E53EE29B01ECA00220433 /* FeedLoader */,
 			);
@@ -314,6 +317,7 @@
 				C39E53F029B01F0600220433 /* LocalFeedLoader.swift in Sources */,
 				C39E53FA29B0387400220433 /* FeedProductMapper.swift in Sources */,
 				C34061EE29B052DD00BB2767 /* JSONFileReader.swift in Sources */,
+				C3B801A829B12A06008A066A /* ProductModel.swift in Sources */,
 				C39E53F329B01F3900220433 /* FeedLoader.swift in Sources */,
 				C39E53BF29B0055C00220433 /* SceneDelegate.swift in Sources */,
 				C39E53F629B01F5400220433 /* FeedProduct.swift in Sources */,
