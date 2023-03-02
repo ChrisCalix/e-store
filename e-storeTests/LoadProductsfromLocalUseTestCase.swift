@@ -91,21 +91,23 @@ class LoadProductsfromLocalUseTestCase: XCTestCase {
     func test_load_deliversSuccessWithItemsFromFileNameWithEmptyJSONItems() {
         let (sut, reader) = makeSUT()
 
-        let item = makeProduct()
+        let item1 = makeProduct()
+        let item2 = makeProduct()
+        let item3 = makeProduct()
 
         let exp = expectation(description: "wait for load completion")
 
         sut.load { result in
             switch result {
             case let .success(receivedData):
-                XCTAssertEqual(receivedData, [item.model])
+                XCTAssertEqual(receivedData, [item1.model, item2.model, item3.model])
             default:
                 XCTFail("Error in completion method")
             }
             exp.fulfill()
         }
 
-        reader.complete(data: makeProductsJSON([item.json]))
+        reader.complete(data: makeProductsJSON([item1.json, item2.json, item3.json]))
 
         waitForExpectations(timeout: 0.1)
     }
