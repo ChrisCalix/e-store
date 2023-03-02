@@ -117,6 +117,16 @@
 			path = JSONFilesTest;
 			sourceTree = "<group>";
 		};
+		C39022F829B155CA00888298 /* MVVM */ = {
+			isa = PBXGroup;
+			children = (
+				C39E53F429B01F4100220433 /* Models */,
+				C3B801B129B14235008A066A /* ViewModel */,
+				C3AE7B7129B0E8EE00308947 /* Views */,
+			);
+			path = MVVM;
+			sourceTree = "<group>";
+		};
 		C39E53B029B0055C00220433 = {
 			isa = PBXGroup;
 			children = (
@@ -138,16 +148,14 @@
 		C39E53BB29B0055C00220433 /* e-store */ = {
 			isa = PBXGroup;
 			children = (
+				C39022F829B155CA00888298 /* MVVM */,
 				C39E53BC29B0055C00220433 /* AppDelegate.swift */,
 				C39E53BE29B0055C00220433 /* SceneDelegate.swift */,
 				C39E53C529B0055D00220433 /* Assets.xcassets */,
 				C39E53C729B0055D00220433 /* LaunchScreen.storyboard */,
 				C39E53CA29B0055D00220433 /* Info.plist */,
 				C3B801B429B142A1008A066A /* Utils */,
-				C3B801B129B14235008A066A /* ViewModel */,
-				C3AE7B7129B0E8EE00308947 /* Views */,
 				C39E53FB29B0395600220433 /* Feed Feature */,
-				C39E53F429B01F4100220433 /* Models */,
 			);
 			path = "e-store";
 			sourceTree = "<group>";
