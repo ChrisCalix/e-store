@@ -29,6 +29,8 @@
 		C3AE7B7029B0E77200308947 /* ProductsListViewControllerUseTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3AE7B6F29B0E77200308947 /* ProductsListViewControllerUseTestCase.swift */; };
 		C3AE7B7429B0FE4800308947 /* ProductsListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3AE7B7329B0FE4800308947 /* ProductsListCollectionViewCell.swift */; };
 		C3B801A829B12A06008A066A /* ProductModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3B801A729B12A06008A066A /* ProductModel.swift */; };
+		C3B801AA29B13715008A066A /* ProductDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3B801A929B13715008A066A /* ProductDetailViewController.swift */; };
+		C3B801AC29B13C57008A066A /* UIImageView+LoadFromURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3B801AB29B13C57008A066A /* UIImageView+LoadFromURL.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +69,8 @@
 		C3AE7B6F29B0E77200308947 /* ProductsListViewControllerUseTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsListViewControllerUseTestCase.swift; sourceTree = "<group>"; };
 		C3AE7B7329B0FE4800308947 /* ProductsListCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsListCollectionViewCell.swift; sourceTree = "<group>"; };
 		C3B801A729B12A06008A066A /* ProductModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductModel.swift; sourceTree = "<group>"; };
+		C3B801A929B13715008A066A /* ProductDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailViewController.swift; sourceTree = "<group>"; };
+		C3B801AB29B13C57008A066A /* UIImageView+LoadFromURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+LoadFromURL.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,6 +139,7 @@
 				C39E53C529B0055D00220433 /* Assets.xcassets */,
 				C39E53C729B0055D00220433 /* LaunchScreen.storyboard */,
 				C39E53CA29B0055D00220433 /* Info.plist */,
+				C3B801AB29B13C57008A066A /* UIImageView+LoadFromURL.swift */,
 			);
 			path = "e-store";
 			sourceTree = "<group>";
@@ -194,6 +199,7 @@
 			children = (
 				C3AE7B7229B0FE1900308947 /* CollectionViewCell */,
 				C39E53C029B0055C00220433 /* ProductsListViewController.swift */,
+				C3B801A929B13715008A066A /* ProductDetailViewController.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -315,10 +321,12 @@
 				C3AE7B7429B0FE4800308947 /* ProductsListCollectionViewCell.swift in Sources */,
 				C39E53F829B01FA800220433 /* FileReader.swift in Sources */,
 				C39E53F029B01F0600220433 /* LocalFeedLoader.swift in Sources */,
+				C3B801AA29B13715008A066A /* ProductDetailViewController.swift in Sources */,
 				C39E53FA29B0387400220433 /* FeedProductMapper.swift in Sources */,
 				C34061EE29B052DD00BB2767 /* JSONFileReader.swift in Sources */,
 				C3B801A829B12A06008A066A /* ProductModel.swift in Sources */,
 				C39E53F329B01F3900220433 /* FeedLoader.swift in Sources */,
+				C3B801AC29B13C57008A066A /* UIImageView+LoadFromURL.swift in Sources */,
 				C39E53BF29B0055C00220433 /* SceneDelegate.swift in Sources */,
 				C39E53F629B01F5400220433 /* FeedProduct.swift in Sources */,
 			);

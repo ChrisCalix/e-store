@@ -23,7 +23,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                                 terms: "Rebate valid on Scotch-Brite® Scrub Dots Non-Scratch Scrub Sponges for any variety, 2 ct. pack or larger.",
                                current_value: "$0.75 Cash Back")
         
-        let navController = UINavigationController(rootViewController: ProductsListViewController(products: [item, item, item]))
+        let navController = UINavigationController(rootViewController: ProductsListViewController(products: [item.product, item.product, item.product]))
         window.rootViewController = navController
         self.window = window
         self.window?.makeKeyAndVisible()

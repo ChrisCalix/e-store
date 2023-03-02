@@ -16,5 +16,5 @@ struct ProductModel: Equatable {
     let terms: String
     let current_value: String
     
-    var isFavoritte: Bool = true
+    var isFavoritte: Bool = false
 }

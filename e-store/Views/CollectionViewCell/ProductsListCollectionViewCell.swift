@@ -50,9 +50,17 @@ class ProductsListCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
+    let favoriteButton: UIButton = {
+        let btn = UIButton()
+        let image = UIImage(systemName: "heart")
+        btn.frame = CGRectMake(0, 0, 20, 20)
+        btn.setImage(image, for: .normal)
+        btn.tintColor = .red
+        btn.contentMode = .scaleAspectFit
+        // add target
+        return btn
+    }()
     
-    
-    private var product: FeedProduct?
     private var imageDataTask: URLSessionDataTask?
     
     override init(frame: CGRect) {
@@ -63,6 +71,8 @@ class ProductsListCollectionViewCell: UICollectionViewCell {
         imageBG.addSubview(image)
         card.addSubview(ammountLabel)
         card.addSubview(nameLabel)
+        image.addSubview(favoriteButton)
+        
         
         NSLayoutConstraint.activate([
             self.card.topAnchor.constraint(equalTo: self.contentView.safeAreaLayoutGuide.topAnchor),
@@ -87,43 +97,35 @@ class ProductsListCollectionViewCell: UICollectionViewCell {
             self.nameLabel.topAnchor.constraint(equalTo: self.ammountLabel.bottomAnchor, constant: 3),
             self.nameLabel.leftAnchor.constraint(equalTo: self.card.leftAnchor),
             self.nameLabel.rightAnchor.constraint(equalTo: self.card.rightAnchor),
-            self.nameLabel.bottomAnchor.constraint(equalTo: self.card.bottomAnchor)
+            self.nameLabel.bottomAnchor.constraint(equalTo: self.card.bottomAnchor),
             
+            self.favoriteButton.topAnchor.constraint(equalTo: self.image.topAnchor),
+            self.favoriteButton.rightAnchor.constraint(equalTo: self.image.rightAnchor),
+            self.favoriteButton.heightAnchor.constraint(equalToConstant: 20),
+            self.favoriteButton.widthAnchor.constraint(equalToConstant: 20)
         ])
         
         
+    }
+                                 
+    @objc func makeFavorite() {
+        print("join button")
+        self.favoriteButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
     
-    public func setupCell(product: FeedProduct) {
-        self.product = product
+    public func setupCell(product: ProductModel, target: Any?) {
         guard let url = URL(string: product.url) else { return }
         
-        imageDataTask = image.loadFrom(url) { [weak self] image in
-            guard let self else { return }
-            self.image.image = image
-        }
+        imageDataTask = image.loadFrom(url)
         
         ammountLabel.text = product.current_value
         nameLabel.text = product.name
+        favoriteButton.isHidden = !product.isFavoritte
     }
 }
 
-extension UIImageView {
-    func loadFrom(_ url: URL, completion: @escaping (_ image: UIImage?) -> ()) -> URLSessionDataTask {
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
-            guard let data else {
-                completion(nil)
-                return
-            }
-            DispatchQueue.main.async {
-                self.image = UIImage(data: data)
-            }
-        }
-        task.resume()
-        return task
-    }
-}
+

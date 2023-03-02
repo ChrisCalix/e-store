@@ -9,9 +9,9 @@ import UIKit
 
 class ProductsListViewController: UICollectionViewController {
     
-    private var products = [FeedProduct]()
+    private var products = [ProductModel]()
     
-    convenience init(products: [FeedProduct] = [FeedProduct]()) {
+    convenience init(products: [ProductModel] = [ProductModel]()) {
         self.init()
         self.products = products
     }
@@ -48,7 +48,7 @@ class ProductsListViewController: UICollectionViewController {
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = dequeueCell(in: collectionView, at: indexPath)
-        cell.setupCell(product: products[indexPath.item])
+        cell.setupCell(product: products[indexPath.item], target: self)
         return cell
     }
     
@@ -58,6 +58,15 @@ class ProductsListViewController: UICollectionViewController {
         }
         return cell
     }
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let vc = ProductDetailViewController()
+        vc.setupVC(products[indexPath.item])
+        self.show(vc, sender: nil)
+       
+    }
+    
+    
 }
 
 extension ProductsListViewController: UICollectionViewDelegateFlowLayout {
