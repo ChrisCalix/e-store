@@ -21,7 +21,7 @@ extension LoadProductsfromLocalUseTestCase {
     }
     
     func makeProduct() -> (model: FeedProduct, json: [String: Any]) {
-        let item = FeedProduct(id: 1, url: "", name: "", description: "", terms: "", current_value: "")
+        let item = FeedProduct(id: "1", url: "", name: "", description: "", terms: "", current_value: "")
         
         let json = [
             "id": item.id,

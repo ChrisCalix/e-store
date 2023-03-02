@@ -9,7 +9,7 @@ import Foundation
 
 struct FeedProduct: Decodable, Equatable {
     
-    let id: Int
+    let id: String
     let url: String
     let name: String
     let description: String

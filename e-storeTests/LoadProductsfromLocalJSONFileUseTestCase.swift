@@ -27,6 +27,26 @@ class LoadProductsfromLocalJSONFileUseTestCase: XCTestCase {
 
         expect(sut, toCompleteWith: .success([]))
     }
+
+    func test_load_deliversSuccessWithItemsFromFileNameWithEmptyJSONItems() {
+        let (sut, _) = makeSUT()
+
+        let item1 = makeProduct(id: "110579",
+                                url: "https://product-images.ibotta.com/offer/dUxYcQPeq391-DiywFZF8g-normal.png",
+                                name: "Scotch-Brite® Scrub Dots Non-Scratch Scrub Sponges",
+                                description: "Any variety - 2 ct. pack or larger",
+                                terms: "Rebate valid on Scotch-Brite® Scrub Dots Non-Scratch Scrub Sponges for any variety, 2 ct. pack or larger.",
+                                currentValue: "$0.75 Cash Back")
+        
+        let item2 = makeProduct(id: "110580",
+                                url: "https://product-images.ibotta.com/offer/OS0MnVcHXe7snozDC7nIiw-normal.png",
+                                name: "Scotch-Brite® Scrub Dots Heavy Duty Scrub Sponges",
+                                description: "Any variety - 2 ct. pack or larger",
+                                terms: "Rebate valid on Scotch-Brite® Scrub Dots Heavy Duty Scrub Sponges for any variety, 2 ct. pack or larger.",
+                                currentValue: "$0.75 Cash Back")
+
+        expect(sut, toCompleteWith: .success([item1.model, item2.model]))
+    }
     
     //MARK: Helpers
     
@@ -34,6 +54,26 @@ class LoadProductsfromLocalJSONFileUseTestCase: XCTestCase {
         let reader = JSONFileReader(bundle: Bundle(for: type(of: self)))
         let sut = LocalFeedLoader(fileName: fileName, reader: reader)
         return (sut, reader)
+    }
+    
+    func makeProduct(id: String, url: String, name: String, description: String, terms: String, currentValue: String) -> (model: FeedProduct, json: [String: Any]) {
+        let item = FeedProduct(id: id,
+                               url: url,
+                               name: name,
+                               description: description,
+                               terms: terms,
+                               current_value: currentValue)
+        
+        let json = [
+            "id": item.id,
+            "url": item.url,
+            "name": item.name,
+            "description": item.description,
+            "terms": item.terms,
+            "current_value": item.current_value
+        ].compactMapValues { $0 }
+        
+        return (item, json)
     }
     
     func expect(_ sut: LocalFeedLoader, toCompleteWith expectedResult: Result<[FeedProduct], LocalFeedLoader.Error>, file: StaticString = #filePath, line: UInt = #line) {
