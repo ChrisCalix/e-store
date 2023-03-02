@@ -104,8 +104,12 @@ class ProductsListCollectionViewCell: UICollectionViewCell {
             self.favoriteButton.heightAnchor.constraint(equalToConstant: 20),
             self.favoriteButton.widthAnchor.constraint(equalToConstant: 20)
         ])
-        
-        
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.image.image = nil
+        imageDataTask?.cancel()
     }
                                  
     @objc func makeFavorite() {
