@@ -12,6 +12,11 @@ class LocalFeedLoader: FeedLoader {
     private let fileName: String
     private let reader: FileReader
     
+    public enum Error: Swift.Error {
+        case invalidData
+        case notFound
+    }
+    
     init(fileName: String, reader: FileReader) {
         self.fileName = fileName
         self.reader = reader
@@ -19,7 +24,12 @@ class LocalFeedLoader: FeedLoader {
     
     func load(completion: @escaping (FeedResult) -> Void) {
         reader.get(from: fileName) { result in
-            
+            switch result {
+            case let .failure(error):
+                completion(.failure(error))
+            default:
+                break
+            }
         }
     }
 }
