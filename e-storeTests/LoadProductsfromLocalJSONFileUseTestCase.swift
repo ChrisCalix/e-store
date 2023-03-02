@@ -16,6 +16,12 @@ class LoadProductsfromLocalJSONFileUseTestCase: XCTestCase {
         expect(sut, toCompleteWith: .failure(.notFound))
     }
     
+    func test_load_DeliversInvalidDataFromFileNameWithInvalidJSON() {
+        let (sut, _) = makeSUT(fileName: "InvalidJSON")
+
+        expect(sut, toCompleteWith: .failure(.invalidData))
+    }
+    
     
     //MARK: Helpers
     
