@@ -16,15 +16,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         guard let windowScene = scene as? UIWindowScene else { return }
         let window = UIWindow(windowScene: windowScene)
-        let item = FeedProduct( id: "110579",
-                                url: "https://product-images.ibotta.com/offer/dUxYcQPeq391-DiywFZF8g-normal.png",
-                                name: "Scotch-Brite® Scrub Dots Non-Scratch Scrub Sponges",
-                                description: "Any variety - 2 ct. pack or larger",
-                                terms: "Rebate valid on Scotch-Brite® Scrub Dots Non-Scratch Scrub Sponges for any variety, 2 ct. pack or larger.",
-                               current_value: "$0.75 Cash Back")
-        
         let viewModel = ProductListViewModel()
-       
         let navController = UINavigationController(rootViewController: ProductsListViewController(viewModel: viewModel))
         window.rootViewController = navController
         self.window = window
