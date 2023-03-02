@@ -21,7 +21,6 @@ struct ProductListViewModel : ProductListViewModelExpected {
         let reader = JSONFileReader()
         let localFeedLoader = LocalFeedLoader(fileName: fileName, reader: reader)
         localFeedLoader.load { result in
-//            guard let self else { return }
             switch result {
             case let .success(receivedProducts):
                 self.products.value = receivedProducts

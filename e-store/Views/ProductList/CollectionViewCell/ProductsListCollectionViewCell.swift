@@ -37,7 +37,7 @@ class ProductsListCollectionViewCell: UICollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 1
         label.font = UIFont(name: "AvenirNext-DemiBold", size: 12)
-        // #4A4A4A
+        label.textColor = UIColor(hex: "#4A4A4A")
         return label
     }()
     
@@ -47,6 +47,7 @@ class ProductsListCollectionViewCell: UICollectionViewCell {
         label.numberOfLines = 1
         label.font = UIFont(name: "AvenirNext-Regular", size: 11)
         label.sizeToFit()
+        label.textColor = UIColor(hex: "#4A4A4A")
         return label
     }()
     
