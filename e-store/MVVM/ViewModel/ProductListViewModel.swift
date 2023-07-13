@@ -11,6 +11,7 @@ protocol ProductListViewModelExpected {
     func getOffersProduct()
     func getProduct(at indexPath: IndexPath ) -> ProductModel?
     func getNumberOfProducts() -> Int?
+    func updateProduct(at indexPath: IndexPath)
 }
 
 struct ProductListViewModel : ProductListViewModelExpected {
@@ -36,6 +37,10 @@ struct ProductListViewModel : ProductListViewModelExpected {
                 return nil
         }
         return products.value?[indexPath.item]
+    }
+    
+    func updateProduct(at indexPath: IndexPath) {
+        products.value?[indexPath.row].isFavoritte.toggle()
     }
     
     func getNumberOfProducts() -> Int? {

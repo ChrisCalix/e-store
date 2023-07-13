@@ -53,7 +53,7 @@ class ProductsListCollectionViewCell: UICollectionViewCell {
     
     let favoriteButton: UIButton = {
         let btn = UIButton()
-        let image = UIImage(systemName: "heart")
+        let image = UIImage(systemName: "heart.fill")
         btn.frame = CGRectMake(0, 0, 20, 20)
         btn.setImage(image, for: .normal)
         btn.tintColor = .red
