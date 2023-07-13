@@ -10,6 +10,7 @@ import UIKit
 class ProductDetailViewController: UIViewController {
     var product: ProductModel?
     private var imageDataTask: URLSessionDataTask?
+    var pressOnFavorite: ((Bool, ProductModel?) -> Void)?
     
     let stackView: UIStackView = {
         let stack = UIStackView()
@@ -73,7 +74,8 @@ class ProductDetailViewController: UIViewController {
     
     @objc func makeFavorite() {
         self.product?.isFavoritte.toggle()
-        self.favoriteBarbutton.setImage(UIImage(systemName: (product?.isFavoritte ?? false) ? "heart.fill" : "heart"), for: .normal)
+        pressOnFavorite?(product?.isFavoritte ?? false, product)
+        self.renderFavoriteStateButton()
     }
     
     override func viewDidLoad() {
@@ -108,6 +110,11 @@ class ProductDetailViewController: UIViewController {
         
         guard let url = URL(string: product.url) else { return }
         imageDataTask = imageView.loadFrom(url)
+        renderFavoriteStateButton()
+    }
+    
+    private func renderFavoriteStateButton() {
+        self.favoriteBarbutton.setImage(UIImage(systemName: (product?.isFavoritte ?? false) ? "heart.fill" : "heart"), for: .normal)
     }
     
     private func initializeBarItems() {

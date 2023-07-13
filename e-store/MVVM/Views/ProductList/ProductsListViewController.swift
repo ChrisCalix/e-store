@@ -58,7 +58,12 @@ class ProductsListViewController: UICollectionViewController {
         if let product = viewModel?.getProduct(at: indexPath) {
             vc.setupVC(product)
         }
-        
+        vc.pressOnFavorite = { [indexPath] isFavorite, product in
+            self.viewModel?.updateProduct(at: indexPath)
+            DispatchQueue.main.async {
+                self.collectionView.reloadItems(at: [indexPath])
+            }
+        }
         self.show(vc, sender: nil)
        
     }
