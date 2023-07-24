@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ProductModel: Equatable {
+struct Product: Equatable {
     
     let id: String
     let url: String

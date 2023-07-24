@@ -14,7 +14,7 @@ enum FeedMapper {
         }
         return .success(
             root.map {
-                ProductModel(
+                Product(
                     id: $0.id ?? "",
                     url: $0.url ?? "",
                     name: $0.name ?? "",

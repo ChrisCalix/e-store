@@ -6,11 +6,15 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class ProductDetailViewController: UIViewController {
-    var product: ProductModel?
     private var imageDataTask: URLSessionDataTask?
-    var pressOnFavorite: ((Bool, ProductModel?) -> Void)?
+    var pressOnFavorite: ((Bool, Product?) -> Void)?
+    
+    var viewModel: ProductDetailViewModel?
+    let bag = DisposeBag()
     
     let stackView: UIStackView = {
         let stack = UIStackView()
@@ -73,8 +77,8 @@ class ProductDetailViewController: UIViewController {
     }()
     
     @objc func makeFavorite() {
-        self.product?.isFavoritte.toggle()
-        pressOnFavorite?(product?.isFavoritte ?? false, product)
+//        self.product?.isFavoritte.toggle()
+//        pressOnFavorite?(product?.isFavoritte ?? false, product)
         self.renderFavoriteStateButton()
     }
     
@@ -98,23 +102,37 @@ class ProductDetailViewController: UIViewController {
         
         NSLayoutConstraint.activate( setContriantsForStaclView() )
         
-        guard let product else { return }
-        self.fillValuesFromProduct(product: product)
+        self.fillValuesFromProduct()
     }
     
-    private func fillValuesFromProduct(product: ProductModel) {
-        nameLabel.text = product.name.uppercased()
-        descriptionLabel.text = product.description.uppercased()
-        currentValueLabel.text = product.current_value.uppercased()
-        termsLabel.text = product.terms.uppercased()
+    private func fillValuesFromProduct() {
         
-        guard let url = URL(string: product.url) else { return }
-        imageDataTask = imageView.loadFrom(url)
+        viewModel?.loadImage()
+            .map({ UIImage(data: $0)})
+            .bind(to: imageView.rx.image)
+            .disposed(by: bag)
+        
+        viewModel?.loadDescription()
+            .bind(to: descriptionLabel.rx.text)
+            .disposed(by: bag)
+        
+        viewModel?.loadCurrentValue()
+            .bind(to: currentValueLabel.rx.text)
+            .disposed(by: bag)
+        
+        viewModel?.loadTitle()
+            .bind(to: nameLabel.rx.text)
+            .disposed(by: bag)
+        
+        viewModel?.loadTermsValue()
+            .bind(to: termsLabel.rx.text)
+            .disposed(by: bag)
+        
         renderFavoriteStateButton()
     }
     
     private func renderFavoriteStateButton() {
-        self.favoriteBarbutton.setImage(UIImage(systemName: (product?.isFavoritte ?? false) ? "heart.fill" : "heart"), for: .normal)
+//        self.favoriteBarbutton.setImage(UIImage(systemName: (product?.isFavoritte ?? false) ? "heart.fill" : "heart"), for: .normal)
     }
     
     private func initializeBarItems() {
@@ -124,10 +142,7 @@ class ProductDetailViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: favoriteBarbutton)
     }
     
-    public func setupVC(_ product: ProductModel) {
-        
-        self.product = product
-    }
+   
     
     private func setContriantsForStaclView() -> [NSLayoutConstraint] {
         return [

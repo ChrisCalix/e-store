@@ -121,7 +121,7 @@ class ProductsListCollectionViewCell: UICollectionViewCell {
         super.init(coder: coder)
     }
     
-    public func setupCell(product: ProductModel, target: Any?) {
+    public func setupCell(product: Product, target: Any?) {
         guard let url = URL(string: product.url) else { return }
         
         imageDataTask = image.loadFrom(url)

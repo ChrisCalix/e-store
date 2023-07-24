@@ -6,23 +6,26 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
+import RxDataSources
 
-class ProductsListViewController: UICollectionViewController {
+class ProductsListViewController: UIViewController{
     
-    private var viewModel: ProductListViewModelExpected?
+    var viewModel: ProductListViewModel!
+    var collectionView: UICollectionView!
     
-    convenience init(viewModel: ProductListViewModelExpected) {
-        self.init()
-        self.viewModel = viewModel
-    }
+    var dataSource = RxCollectionViewSectionedReloadDataSource<ProductsSection>(configureCell: { ds, cv, ip, item in
+           switch item {
+           case let .product(value):
+               let cell = cv.dequeueReusableCell(withReuseIdentifier: "cell", for: ip) as! ProductsListCollectionViewCell
+               cell.setupCell(product: value, target: ProductsListViewController.self)
+               return cell
+           }
+       })
+       
     
-    init() {
-        super.init(collectionViewLayout: UICollectionViewFlowLayout())
-    }
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
+    let bag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,41 +34,30 @@ class ProductsListViewController: UICollectionViewController {
         self.initializeNavigationbarItems()
         self.initializeCollectionView()
         
-        viewModel?.getOffersProduct()
-    }
-    
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel?.getNumberOfProducts() ?? 0
-    }
-    
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = dequeueCell(in: collectionView, at: indexPath)
-        if let product = viewModel?.getProduct(at: indexPath) {
-            cell.setupCell(product: product, target: self)
-        }
-        return cell
-    }
-    
-    private func dequeueCell(in collectionView: UICollectionView, at indexPath: IndexPath) -> ProductsListCollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? ProductsListCollectionViewCell else {
-            return ProductsListCollectionViewCell()
-        }
-        return cell
-    }
-    
-    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let vc = ProductDetailViewController()
-        if let product = viewModel?.getProduct(at: indexPath) {
-            vc.setupVC(product)
-        }
-        vc.pressOnFavorite = { [indexPath] isFavorite, product in
-            self.viewModel?.updateProduct(at: indexPath)
-            DispatchQueue.main.async {
-                self.collectionView.reloadItems(at: [indexPath])
-            }
-        }
-        self.show(vc, sender: nil)
-       
+        viewModel.getOffersProduct()
+        viewModel
+            .products
+            .bind(to:
+                    collectionView.rx.items(dataSource: dataSource)
+            ).disposed(by: bag)
+        
+        collectionView.rx.modelSelected(ProductModel.self)
+            .subscribe(onNext: {
+                switch $0 {
+                case let .product(value):
+                    let vc = ProductDetailViewController()
+                    vc.viewModel = ProductDetailViewModel(product: value)
+                    
+//                    vc.pressOnFavorite = { [indexPath] isFavorite, product in
+//                        self.viewModel?.updateProduct(at: indexPath)
+//                        DispatchQueue.main.async {
+//                            self.collectionView.reloadItems(at: [indexPath])
+//                        }
+//                    }
+                    self.show(vc, sender: nil)
+                }
+            })
+            .disposed(by: bag)
     }
     
     private func initializeNavigationbarItems() {
@@ -73,18 +65,38 @@ class ProductsListViewController: UICollectionViewController {
     }
     
     private func initializeCollectionView() {
+        let layout = UICollectionViewFlowLayout()
+        layout.sectionInset = .zero
+        layout.itemSize = collectionViewCGSize()
+        layout.minimumLineSpacing = 24
+        layout.minimumInteritemSpacing = 8
         
+        collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: layout)
+        
+        view.addSubview(collectionView)
         collectionView.register(ProductsListCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate(setContriantsForCollectionView())
     }
     
     private func setContriantsForCollectionView() -> [NSLayoutConstraint] {
+        
         return  [
             collectionView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
             collectionView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
             collectionView.leftAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leftAnchor, constant: 12),
             collectionView.rightAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.rightAnchor, constant: -12)
         ]
+    }
+    
+    func collectionViewCGSize() -> CGSize {
+        let columns: CGFloat = 2
+       let spacing: CGFloat = 8
+       let totalHorizontalSpacing = (columns - 1) * spacing
+
+       let itemWidth = (self.view.bounds.width-40 - totalHorizontalSpacing) / columns
+       let itemSize = CGSize(width: itemWidth, height: itemWidth * 0.8)
+
+       return itemSize
     }
 }
